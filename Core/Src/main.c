@@ -22,8 +22,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "LCD_I2C.H"
+#include "lcd.h"
+
+const char carita_triste[8] = {0x00, 0x0A, 0x0A, 0x00, 0x00, 0x11, 0x0E, 0x00};
 const char corazon[8] = {0x00, 0x0A, 0x1F, 0x1F, 0x1F, 0x0E, 0x04, 0x00};
-const char carita[8]  = {0x00, 0x0A, 0x0A, 0x00, 0x11, 0x0E, 0x00, 0x00};
 
 /* USER CODE END Includes */
 
@@ -91,17 +93,26 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+
+  /*Lcd_Init();
+  Lcd_Cmd(_LCD_CLEAR);
+  Lcd_Cmd(_LCD_CURSOR_OFF);
+  Lcd_Text(1, 1, "estamos");
+  Lcd_Text(2, 1, "neutro");*/
+
+
   
   I2C_Lcd_Init();
   I2C_Lcd_Cmd(_LCD_CLEAR);
   I2C_Lcd_Cmd(_LCD_CURSOR_OFF);
-  I2C_Lcd_Text(1, 1, "estamos");
-  I2C_Lcd_Text(2, 1, "neutro");
-  I2C_Lcd_Chr(4, 15, 'N');
-  I2C_Lcd_chr_propio(4, 16, 1, corazon);   // especial 1, junto a la N
-  I2C_Lcd_chr_propio(4, 17, 2, carita);    // especial 2
+  I2C_Lcd_Text(1, 1, "hola");
+  I2C_Lcd_Text(2, 1, "vale");
+  I2C_Lcd_Chr(4, 15, 'P');
+  I2C_Lcd_chr_propio(2, 11, 3, carita_triste);
+  I2C_Lcd_chr_propio(4, 11, 1, corazon);   // especial 1, junto a la N
+   // carita triste
 
   /* USER CODE END 2 */
 
@@ -147,7 +158,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
@@ -204,15 +215,23 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(rojo_GPIO_Port, rojo_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LCD_RS_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin
                           |LCD_D7_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(rojo_GPIO_Port, rojo_Pin, GPIO_PIN_RESET);
+  /*Configure GPIO pin : rojo_Pin */
+  GPIO_InitStruct.Pin = rojo_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(rojo_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LCD_RS_Pin LCD_D4_Pin LCD_D5_Pin LCD_D6_Pin
                            LCD_D7_Pin */
@@ -222,13 +241,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : rojo_Pin */
-  GPIO_InitStruct.Pin = rojo_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(rojo_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_EN_Pin */
   GPIO_InitStruct.Pin = LCD_EN_Pin;

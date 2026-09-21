@@ -1,18 +1,28 @@
 /*
- * LCD_I2C.H
+ * lcd.h
  *
- *  Created on: Feb 26, 2023
+ *  Created on: Feb 27, 2023
  *      Author: Alcides Ramos
  */
-
-#ifndef LIBRERIA_LCD_I2C_H_
-#define LIBRERIA_LCD_I2C_H_
 #include "main.h"
+#include "delays.h"
+/*
+#define LCD_RS_Pin GPIO_PIN_12
+#define LCD_RS_GPIO_Port GPIOB
+#define LCD_EN_Pin GPIO_PIN_13
+#define LCD_EN_GPIO_Port GPIOB
+#define LCD_D4_Pin GPIO_PIN_14
+#define LCD_D4_GPIO_Port GPIOB
+#define LCD_D5_Pin GPIO_PIN_15
+#define LCD_D5_GPIO_Port GPIOB
+#define LCD_D6_Pin GPIO_PIN_8
+#define LCD_D6_GPIO_Port GPIOA
+#define LCD_D7_Pin GPIO_PIN_9
+#define LCD_D7_GPIO_Port GPIOA
+*/
 
-extern I2C_HandleTypeDef i2c_pin;  //i2c a utilzar
-
-#define _LCD_FIRST_ROW          0x80     //Move cursor to the 1st row
-#define _LCD_SECOND_ROW         0xC0     //Move cursor to the 2nd row
+#ifndef LIBRERIA_LCD_H_
+#define LIBRERIA_LCD_H_
 #define _LCD_FIRST_ROW          0x80     //Move cursor to the 1st row
 #define _LCD_SECOND_ROW         0xC0     //Move cursor to the 2nd row
 //#define _LCD_THIRD_ROW          0x90     //Move cursor to the 3rd row
@@ -33,26 +43,14 @@ extern I2C_HandleTypeDef i2c_pin;  //i2c a utilzar
 #define _LCD_SHIFT_LEFT         0x18     //Shift display left without changing display data RAM
 #define _LCD_SHIFT_RIGHT        0x1E     //Shift display right without changing display data RAM
 
-// PINES USADOS  EN EL PCF8574
-// P7, P6, P5, P4 = Data, P3=Backlight (BL), P2=E, P1=RW, P0=RS
-
-//#define LCD_ADDR 0x4E        //direccion del i2c 0b0100     A2A1A0     1
-#define LCD_ADDR 0x7E      //direccion del i2c     0b0100     A2A1A0     1
-//#define LCD_ADDR 0x40      //direccion del i2c     0b0100     A2A1A0     0
-
-
-#define LCD_BL 0x08
-#define LCD_EN 0x04
-#define LCD_RS 0x01
-
-
-void I2C_Lcd_Cmd(char out_char);
-void I2C_Lcd_Init();
-void I2C_Lcd_Chr(char row, char column, char out_char);
-void I2C_Lcd_Chr_Cp(char out_char);
-void I2C_Lcd_Text(char row, char col, char *text);
-void I2C_Lcd_Text_Cp(char *text);
-void  I2C_Lcd_chr_propio(uint8_t fila,uint8_t columna,const uint8_t cual,const char *vect);
+void Lcd_Cmd(uint8_t coman);
+void Lcd_Gotoxy(uint8_t fila, uint8_t columna);
+void Lcd_Init();
+void Lcd_Chr(uint8_t fila,uint8_t columna,char dat);
+void Lcd_Chr_Cp(char dat);
+void Lcd_Text(uint8_t fila,uint8_t columna,char *text1);
+void Lcd_Text_Cp(char *text1);
+void  Lcd_chr_propio(uint8_t fila,uint8_t columna,uint8_t cual,const char *vect);
 
 
 
@@ -61,5 +59,4 @@ void  I2C_Lcd_chr_propio(uint8_t fila,uint8_t columna,const uint8_t cual,const c
 
 
 
-
-#endif /* LIBRERIA_LCD_I2C_H_ */
+#endif /* LIBRERIA_LCD_H_ */

@@ -24,8 +24,8 @@
 #include "LCD_I2C.H"
 #include "lcd.h"
 
-const char carita_triste[8] = {0x00, 0x0A, 0x0A, 0x00, 0x00, 0x11, 0x0E, 0x00};
-const char corazon[8] = {0x00, 0x0A, 0x1F, 0x1F, 0x1F, 0x0E, 0x04, 0x00};
+const char rayo[8] = {0x02, 0x04, 0x08, 0x1F, 0x04, 0x08, 0x10, 0x00};
+const char carita[8] = {0x00, 0x0A, 0x0A, 0x00, 0x11, 0x0E, 0x00, 0x00};
 
 /* USER CODE END Includes */
 
@@ -96,23 +96,17 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  /*Lcd_Init();
-  Lcd_Cmd(_LCD_CLEAR);
-  Lcd_Cmd(_LCD_CURSOR_OFF);
-  Lcd_Text(1, 1, "estamos");
-  Lcd_Text(2, 1, "neutro");*/
-
-
+  
   
   I2C_Lcd_Init();
   I2C_Lcd_Cmd(_LCD_CLEAR);
   I2C_Lcd_Cmd(_LCD_CURSOR_OFF);
-  I2C_Lcd_Text(1, 1, "hola");
-  I2C_Lcd_Text(2, 1, "vale");
-  I2C_Lcd_Chr(4, 15, 'P');
-  I2C_Lcd_chr_propio(2, 11, 3, carita_triste);
-  I2C_Lcd_chr_propio(4, 11, 1, corazon);   // especial 1, junto a la N
-   // carita triste
+  I2C_Lcd_Text(1, 1, "Carolina");
+  I2C_Lcd_Text(2, 1, "Velasco");
+  I2C_Lcd_Chr(4, 15, 'C');
+  I2C_Lcd_chr_propio(2, 15, 3, rayo);
+  I2C_Lcd_chr_propio(1, 15, 2, carita);   
+
 
   /* USER CODE END 2 */
 
